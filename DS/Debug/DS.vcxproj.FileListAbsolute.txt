@@ -1,0 +1,2 @@
+E:\MyProjects\C\DataStruct\Pr-1\DataStract\DS\Debug\DS.exe
+E:\MyProjects\C\DataStruct\Pr-1\DataStract\DS\Debug\DS.pdb
