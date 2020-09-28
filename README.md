@@ -1,4 +1,4 @@
-# DataStract
+# DataStruct
 “ 数据结构C语言版”，一个自娱自乐的小程序。
 
 # 一、简述
