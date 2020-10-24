@@ -6,21 +6,140 @@
 // 分配增量
 #define LIST_INCREMENT 10
 
+
 #define ERROR 0
 #define OK 1
 
 typedef int ElemType;
 typedef int Status;
 
-// 单链表系列函数
-typedef struct LNode {
-	ElemType data[3];
-	struct LNode* next;
-}LNode, * LinkList;
 
-Status SqListInsert(LinkList& L, int i, ElemType e) {
+
+
+/*
+	《数据结构》高分笔记——第二章 线性表
+*/
+#define maxSize 100
+
+// 顺序表结构体定义
+typedef struct {
+	int data[maxSize];
+	int length;
+}Sqlist;
+
+// 单链表节点定义
+typedef struct LNode {
+	int data;
+	struct LNode *next;
+}LNode;
+
+// 双链表节点定义
+typedef struct DLNode {
+	int data;
+	struct DLNode* prior;	// 指向前驱结点的指针
+	struct DLNode* next;	// 指向后继结点的指针
+}DLNode;
+
+/*
+	动态分配结点
+	DLNode* A = (DLNode*)malloc(sizeof(DLNode));
+*/
+
+/*
+	一、顺序表的操作
+*/
+// find
+int findElem(Sqlist L, int x) {
+	int i;
+	for (i = 0; i < L.length; i++) {
+		if (x < L.data[i]) {
+			return i;
+		}
+	}
+	return i;
+}
+// insert(right)
+int insertElem(Sqlist& L, int x) {
+	int p, i;
+	p = findElem(L, x);
+	for (i = L.length - 1; i >= p; i--) {
+		L.data[i + 1] = L.data[i];
+	}
+	L.data[p] = x;
+	(L.length)++;
 	return OK;
 }
+// delete
+int deleteElem(Sqlist& L, int p, int& e) {
+	int i;
+	if (p < 0 || p > L.length - 1)
+		return ERROR;
+	e = L.data[p];
+	for (i = p; i < L.length - 1; i++)
+		L.data[i] = L.data[i + 1];
+	(L.length)--;
+	return OK;
+}
+// 顺序表的初始化
+void initList(Sqlist& L) {
+	L.length = 0;
+}
+// 用e返回L中p位置上的元素
+int getElem(Sqlist L, int p, int& e) {
+	if (p < 0 || p > L.length - 1)
+		return ERROR;
+	e = L.data[p];
+	return OK;
+}
+
+/*
+	二、单链表的操作
+*/
+// A、B链表均为元素递增有序（带头结点），现将他们合并至C链表，要求C链表按元素值非递减有序
+void merge(LNode* A, LNode* B, LNode*& C) {
+	LNode* p = A->next;
+	LNode* q = B->next;
+	LNode* r;
+	C = A;	// 用A的头结点作C的头结点
+	C->next = NULL;
+	free(B);
+	r = C;
+	while (p != NULL && q != NULL) {
+		if (p->data <= q->data) {
+			r->next = p;
+			p = p->next;
+			r = r->next;
+		}
+		else {
+			r->next = q;
+			q = q->next;
+			r = r->next;
+		}
+	}
+	r->next = NULL;
+	if(p != NULL)
+		r->next = p;
+	if(q != NULL)
+		r->next = q;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // 执行函数
 void hello() {
@@ -174,12 +293,12 @@ void zuidachengji() {
 	int size = 0;
 	int i;
 	printf("请输入数组长度：");
-	scanf("%d", &size);
+	scanf_s("%d", &size);
 	int* chengji_row = (int*)malloc(sizeof(int) * size);
 	printf("请输入数组数据：\n");
 	for (i = 0; i < size; i++) {
 		printf("[%d]:", i);
-		scanf("%d", &chengji_row[i]);
+		scanf_s("%d", &chengji_row[i]);
 	}
 
 	printf("你输入的数组是：\n");
@@ -189,7 +308,7 @@ void zuidachengji() {
 	printf("排序后的数组是：\n");
 	showRows(chengji_row, size);
 
-	printf("最大乘积是%d x %d x %d = %d。\n", chengji_row[0], chengji_row[1], chengji_row[size - 1], chengji_row[0] * chengji_row[1] * chengji_row[size - 1]);
+	printf_s("最大乘积是%d x %d x %d = %d。\n", chengji_row[0], chengji_row[1], chengji_row[size - 1], chengji_row[0] * chengji_row[1] * chengji_row[size - 1]);
 
 	pro_finish();
 }
@@ -269,7 +388,7 @@ void my_choice(int choice) {
 	case 7:
 		int num;
 		printf("请输入1~9999之间任意一个数：\n");
-		scanf("%d", &num);
+		scanf_s("%d", &num);
 		diandao(num);
 		break;
 	case 8:
@@ -292,7 +411,7 @@ void main() {
 
 	while (1) {
 		wait_logo();
-		scanf("%d", &choice);
+		scanf_s("%d", &choice);
 		my_choice(choice);
 	}
 
