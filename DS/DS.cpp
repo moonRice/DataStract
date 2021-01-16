@@ -92,6 +92,7 @@ int getElem(Sqlist L, int p, int& e) {
 	return OK;
 }
 
+
 /*
 	二、单链表的操作
 */
